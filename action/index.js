@@ -1,4 +1,5 @@
 require('./start')
 require('./help')
+require('./inline')
 require('./echo')
 require('./photo')
