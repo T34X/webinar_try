@@ -1,4 +1,5 @@
-require('dotenv').config()
+// to run confession bot
+require('./confession')
 
-require('./confession/action')
-require('./confession/core')
+// to run package finder bot
+// require('./package_finder')
