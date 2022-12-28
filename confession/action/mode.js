@@ -7,7 +7,7 @@ const composer = new Composer()
 
 const url = "https://raw.githubusercontent.com/denoland/registry/master/src/database.json"
 
-composer.on('inline_query', async ({inlineQuery, answerInlineQuery}) => {
+composer.on('inline_query', async (ctx) => {
     let results = []
     let indexation = 0
     let database = await axios.get(url).then(
@@ -15,7 +15,7 @@ composer.on('inline_query', async ({inlineQuery, answerInlineQuery}) => {
     )
 
     let packs = Object.keys(database).map( (obj) => { return obj }) 
-    let similarities = fuzzy.filter(inlineQuery.query, packs).sort().slice(0,20)
+    let similarities = fuzzy.filter(ctx.inlineQuery.query, packs).sort().slice(0,20)
     let found = similarities.map( (it) => { return it.string } )
     for (let key of found){
         let data = database[key]
@@ -48,8 +48,9 @@ composer.on('inline_query', async ({inlineQuery, answerInlineQuery}) => {
             results.push(querylizer)
         }; serializer()
     }
-    console.log(results)
-    return answerInlineQuery({results})
+
+    
+    return await ctx.answerInlineQuery({results})
 
 })
 
