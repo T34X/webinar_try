@@ -29,12 +29,10 @@ composer.on('inline_query', async (ctx) => {
             `<b>Package:</b> ${prefix}\n` +
             `<b>Author:</b> ${author}\n`
         
-        const keyboard = Markup.inlineKeyboard([
-            Markup.button.url("Github",`${github}`),
-            Markup.button.url('Deno', `${deno}`),
-        ], {
-            columns: 2
-        })
+        let keyboard = [
+            [Markup.button.url("Github",`${github}`)],
+            [Markup.button.url('Deno', `${deno}`)]
+        ]
 
         let serializer = () => {
             const querylizer = {
@@ -42,15 +40,16 @@ composer.on('inline_query', async (ctx) => {
                 id: ++indexation,
                 url: deno,
                 title: prefix,
-                reply_markup: keyboard,
                 message_text: text,
+                parse_mode: "html",
+                ...Markup.inlineKeyboard(keyboard)
             }
             results.push(querylizer)
         }; serializer()
     }
 
-    
-    return await ctx.answerInlineQuery({results})
+
+    return await ctx.answerInlineQuery(results)
 
 })
 
